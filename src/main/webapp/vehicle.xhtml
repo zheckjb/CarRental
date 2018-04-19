@@ -3,7 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<script>
+    today = Date();
+</script>
 <ui:composition template="/WEB-INF/template.xhtml">
     <f:metadata>
         <f:viewParam name="id" value="#{vehicleForm.carId}"/>
@@ -19,59 +23,93 @@
                 </div>
                 <div class="w3-col s12 m12 l6">
                     <table class="w3-table">
-                        <tr class="w3-hide-large w3-hide-medium">
-                            <th style="padding: 8px 8px 0 8px">Year:</th>
-                        </tr>
                         <tr>
                             <th class="w3-hide-small">Year:</th>
                             <td>#{vehicleForm.vehicle.year}</td>
                         </tr>
-                        <tr class="w3-hide-large w3-hide-medium">
-                            <th style="padding: 8px 8px 0 8px">Model:</th>
-                        </tr>
+
                         <tr>
                             <th class="w3-hide-small">Model:</th>
                             <td>#{vehicleForm.vehicle.model}</td>
                         </tr>
-                        <tr class="w3-hide-large w3-hide-medium">
-                            <th style="padding: 8px 8px 0 8px">Passengers:</th>
-                        </tr>
+
                         <tr>
                             <th class="w3-hide-small">Passengers:</th>
                             <td>#{vehicleForm.vehicle.passengers}</td>
                         </tr>
-                        <tr class="w3-hide-large w3-hide-medium">
-                            <th style="padding: 8px 8px 0 8px">Tank:</th>
-                        </tr>
+
                         <tr>
                             <th class="w3-hide-small">Fuel tank:</th>
                             <td>#{vehicleForm.vehicle.tank} liters</td>
                         </tr>
-                        <tr class="w3-hide-large w3-hide-medium">
-                            <th style="padding: 8px 8px 0 8px">Gearbox:</th>
-                        </tr>
+
                         <tr>
                             <th class="w3-hide-small">Gearbox:</th>
                             <td>#{vehicleForm.vehicle.gearbox}</td>
                         </tr>
-                        <tr class="w3-hide-large w3-hide-medium">
-                            <th style="padding: 8px 8px 0 8px">Rate:</th>
-                        </tr>
+
                         <tr>
                             <th class="w3-hide-small">Rate:</th>
                             <td>#{vehicleForm.vehicle.rate} &#x20AC;/h</td>
                         </tr>
                         <tr>
+                            <th></th>
+                            <td></td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                <h:outputText rendered="#{not currentUser.signedIn}"
+                                              value="Please Sign-in to process further"/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <h:form >
+                    <table class="w3-table" >
+                        <tr>
+                            <th>
+                                <h:outputText value="Start Date" rendered="#{currentUser.signedIn}"/>
+                            </th>
+                            <td>
+                                <p:calendar id="dateStart" mode="popup"
+                                            value="#{vehicleForm.startDate}"
+                                            required="true"
+                                            pattern="dd/MM/yyyy"
+                                            mindate="today"
+                                            requiredMessage="Start date mandatory"
+                                            rendered="#{currentUser.signedIn}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <h:outputText value="End Date" rendered="#{currentUser.signedIn}"/>
+                            </th>
+                            <td>
+                                <p:calendar id="dateEnd" mode="popup"
+                                            value="#{vehicleForm.endDate}"
+                                            required="true"
+                                            pattern="dd/MM/yyyy"
+                                            mindate="today"
+                                            requiredMessage="End date mandatory"
+                                            rendered="#{currentUser.signedIn}"/>
+                            </td>
+                        </tr>
+                        <tr id="button">
                             <td colspan="2">
-                                <h:form>
+
                                     <h:messages/>
-                                    <h:commandButton value="Reserve" action="#{vehicleForm.reserve}" rendered="#{currentUser.signedIn}">
-                                        <f:ajax execute="@form" render="@form"/>
+                                    <h:commandButton id="reserve" value="Reserve"
+                                                 action="#{vehicleForm.reserve}"
+                                                 rendered="#{currentUser.signedIn}">
+                                            <f:ajax execute="dateStart dateEnd" render="@form"/>
                                     </h:commandButton>
-                                </h:form>
+
                             </td>
                         </tr>
                     </table>
+                </h:form>
                 </div>
             </div>
         </div>

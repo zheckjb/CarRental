@@ -9,43 +9,55 @@
     <ui:define name="content">
         <f:metadata>
             <f:viewAction action="#{vehicleSearch.showAll}"/>
-            <f:viewAction action="#{vehicleSearch.listModels}"/>
-            <f:viewAction action="#{vehicleSearch.listYears}"/>
         </f:metadata>
-        <div class="w3-bar w3-margin-bottom w3-margin-top">
-            <h:outputText value="Model:" styleClass="w3-bar-item"/>
-            <h:selectOneMenu id="model" value="#{vehicleSearch.parModel}" title="Model" styleClass="w3-bar-item">
-                <f:selectItems value="#{vehicleSearch.itemModel}"/>
-            </h:selectOneMenu>
-            <h:outputText value="Year:" styleClass="w3-bar-item"/>
-            <h:selectOneMenu id="year" value="#{vehicleSearch.parYear}" styleClass="w3-bar-item">
-                <f:selectItems value="#{vehicleSearch.itemYear}"/>
-            </h:selectOneMenu>
-            <h:commandButton value="Search" action="#{vehicleSearch.searchCars}" styleClass="w3-bar-item w3-btn w3-green">
-                    <f:ajax render="list" execute="model year"/>
-            </h:commandButton>
-        </div>
-        <h:panelGroup id="list" styleClass="w3-row">
-            <ui:repeat value="#{vehicleSearch.searchResult}" var="vehicle">
-                <div class="w3-col s12 m6 l3 w3-padding">
-                    <div class="w3-card-4">
-                        <img src="http://via.placeholder.com/250/#d9b3ff/2f2/cover.png?text=#{vehicle.rate} &#x20AC;/h" style="width: 100%"/>
-                        <div class="w3-container">
-                            <h4 style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">
-                                <b>
-                                    <h:link value="#{vehicle.description}" outcome="/vehicle.xhtml">
-                                        <f:param name="id" value="#{vehicle.id}"/>
-                                    </h:link>
-                                </b>
-                            </h4>
-                            <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">
-                                <h:outputText value="#{vehicle.descr}"/>
-                            </p>
+        <h:form>
+            <div class="w3-bar w3-margin-bottom w3-margin-top">
+                <h:outputText value="Model:" styleClass="w3-bar-item"/>
+                <h:selectOneMenu id="model" value="#{vehicleSearch.model}" title="Model" styleClass="w3-bar-item">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItems value="#{vehicleSearch.models}"/>
+                </h:selectOneMenu>
+                <h:outputText value="Year:" styleClass="w3-bar-item"/>
+                <h:selectOneMenu id="year" value="#{vehicleSearch.year}" styleClass="w3-bar-item">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItems value="#{vehicleSearch.years}"/>
+                </h:selectOneMenu>
+                <h:outputText value="Gearbox:" styleClass="w3-bar-item"/>
+                <h:selectOneMenu id="gearbox" value="#{vehicleSearch.gearbox}" styleClass="w3-bar-item">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItems value="#{vehicleSearch.gearboxs}"/>
+                </h:selectOneMenu>
+                <h:outputText value="Passengers:" styleClass="w3-bar-item"/>
+                <h:selectOneMenu id="passenger" value="#{vehicleSearch.passenger}" styleClass="w3-bar-item">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItems value="#{vehicleSearch.passengers}"/>
+                </h:selectOneMenu>
+                <h:commandButton value="Search" action="#{vehicleSearch.searchCars}" styleClass="w3-bar-item w3-btn w3-green">
+                        <f:ajax render="list" execute="model year gearbox passenger"/>
+                </h:commandButton>
+            </div>
+            <h:panelGroup id="list" styleClass="w3-row">
+                <ui:repeat value="#{vehicleSearch.searchResult}" var="vehicle">
+                    <div class="w3-col s12 m6 l3 w3-padding">
+                        <div class="w3-card-4">
+                            <img src="http://via.placeholder.com/250/#d9b3ff/2f2/cover.png?text=#{vehicle.rate} &#x20AC;/h" style="width: 100%"/>
+                            <div class="w3-container">
+                                <h4 style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">
+                                    <b>
+                                        <h:link value="#{vehicle.description}" outcome="/vehicle.xhtml">
+                                            <f:param name="id" value="#{vehicle.id}"/>
+                                        </h:link>
+                                    </b>
+                                </h4>
+                                <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">
+                                    <h:outputText value="#{vehicle.descr}"/>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </ui:repeat>
-        </h:panelGroup>
+                </ui:repeat>
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 </ui:composition>
 </html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="w3-content">
+
+            <f:metadata>
+                <f:viewAction action="#{myOrderForm.prepareOrders}"/>
+            </f:metadata>
+                <div class="w3-panel">
+                    <h:outputText value="List of orders"/>
+                </div>
+            <h:form>
+                <h:panelGroup rendered="#{empty myOrderForm.orders}">
+                    <div class="w3-panel w3-light-grey">
+                        <p>Nothing to display here</p>
+                    </div>
+                </h:panelGroup>
+                <h:dataTable value="#{myOrderForm.orders}" var="order" styleClass="w3-table w3-bordered w3-striped"
+                             rendered="#{not empty myOrderForm.orders}" headerClass="w3-blue">
+                    <h:column>
+                        <f:facet name="header">Model</f:facet>
+                        #{order.vehicle.model}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Start date</f:facet>
+                        #{order.startDate}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">End date</f:facet>
+                        #{order.endtDate}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Status</f:facet>
+                        #{order.status}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">ISBN</f:facet>
+                        <h:commandButton value="Cancel"
+                                         action="#{myOrderForm.cancelReservation(order)}"
+                                         rendered="#{order.status eq 'BOOKED'}">
+                            <f:ajax execute="@form" render="@form"/>
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+
+
+            </h:form>
+
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

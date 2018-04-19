@@ -41,6 +41,7 @@ public class EmailSender {
 
 //            Transport.send(msg);
             logger.info("Code "+msg);
+
         } catch (MessagingException e) {
             logger.error("Sending email error", e);
         }
@@ -57,6 +58,7 @@ public class EmailSender {
 
 //            Transport.send(msg);
             logger.info("Code "+msg);
+
         } catch (MessagingException e) {
             logger.error("Sending email error", e);
         }

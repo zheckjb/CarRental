@@ -28,7 +28,7 @@ public class Vehicle implements Serializable {
         @Column(nullable = false)
         private int tank;
     @Column(nullable = false)
-    private float rate;
+    private double rate;
 
     private String descr;
     private String accontrol;
@@ -43,7 +43,7 @@ public class Vehicle implements Serializable {
     }
 
     public String getDescr() {
-        setDescr(String.format("%s,%s, year %d, doors: %d",model,gearbox,year,doors));
+        setDescr(String.format("%s, %s, year %d, doors: %d",model,gearbox,year,doors));
         return descr;
     }
 
@@ -51,11 +51,11 @@ public class Vehicle implements Serializable {
         this.descr = descr;
     }
 
-    public float getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(float rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 

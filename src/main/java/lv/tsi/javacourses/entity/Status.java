@@ -4,5 +4,6 @@ public enum Status {
     ACCEPTED,
     REJECTED,
     BOOKED,
-    CANCELED
+    CANCELED,
+    PAID
 }

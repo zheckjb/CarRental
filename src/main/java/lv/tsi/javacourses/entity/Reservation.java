@@ -29,7 +29,6 @@ public class Reservation {
     private static Logger logger = Logger.getLogger("Reservation");
     public long getPeriodInDays() {
         long diff = endDate.getTime() - startDate.getTime();
-        logger.info("Diff: "+diff);
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 

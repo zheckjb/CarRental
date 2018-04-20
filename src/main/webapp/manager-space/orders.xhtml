@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="w3-content">
+            <f:metadata>
+                <f:viewAction action="#{managerForm.orderdersAwtConfirmation}"/>
+                <f:viewAction action="#{managerForm.orderdersAwtPayment}"/>
+            </f:metadata>
+            <div class="w3-panel">
+                <h:outputText value="List of orders waiting for processing"/>
+            </div>
+            <h:form >
+                <h:panelGroup rendered="#{empty managerForm.ordersBooked}">
+                    <div class="w3-panel w3-light-grey">
+                        <p>Nothing to display here</p>
+                    </div>
+                </h:panelGroup>
+                <h:dataTable value="#{managerForm.ordersBooked}" var="ordersBooked" styleClass="w3-table w3-bordered w3-striped"
+                             rendered="#{not empty managerForm.ordersBooked}" headerClass="w3-green">
+                    <h:column>
+                        <f:facet name="header">Beneficiary</f:facet>
+                        #{ordersBooked.user.fullName}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Model</f:facet>
+                        #{ordersBooked.vehicle.description}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Start date</f:facet>
+                        <h:outputText value="#{ordersBooked.startDate}" >
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">End date</f:facet>
+                        <h:outputText value="#{ordersBooked.endtDate}" >
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:outputText>
+
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Status</f:facet>
+                        #{ordersBooked.status}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Days</f:facet>
+                        #{ordersBooked.periodInDays}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Price</f:facet>
+                        #{ordersBooked.rentPrice} &#x20AC;
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Action</f:facet>
+                        <h:commandButton value="Accept"
+                                         action="#{managerForm.acceptOrder(ordersBooked)}"
+                                         rendered="#{ordersBooked.status eq 'BOOKED'}">
+                            <f:ajax execute="@form" render="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="Reject"
+                                         action="#{managerForm.rejectOrder(ordersBooked)}"
+                                         rendered="#{ordersBooked.status eq 'BOOKED'}">
+                            <f:ajax execute="@form" render="@form"/>
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+            <div class="w3-panel">
+                <h:outputText value="List of orders waiting for Payment"/>
+            </div>
+            <h:form >
+                <h:panelGroup rendered="#{empty managerForm.ordersAccepted}">
+                    <div class="w3-panel w3-light-grey">
+                        <p>Nothing to display here</p>
+                    </div>
+                </h:panelGroup>
+                <h:dataTable value="#{managerForm.ordersAccepted}" var="ordersAccepted" styleClass="w3-table w3-bordered w3-striped"
+                             rendered="#{not empty managerForm.ordersAccepted}" headerClass="w3-green">
+                    <h:column>
+                        <f:facet name="header">Beneficiary</f:facet>
+                        #{ordersAccepted.user.fullName}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Model</f:facet>
+                        #{ordersAccepted.vehicle.description}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Start date</f:facet>
+                        <h:outputText value="#{ordersAccepted.startDate}" >
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">End date</f:facet>
+                        <h:outputText value="#{ordersAccepted.endtDate}" >
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:outputText>
+
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Status</f:facet>
+                        #{ordersAccepted.status}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Days</f:facet>
+                        #{ordersAccepted.periodInDays}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Price</f:facet>
+                        #{ordersAccepted.rentPrice} &#x20AC;
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Message</f:facet>
+                        <h:outputText value="Payment received"
+                        rendered="#{ordersAccepted.status eq 'PAID'}"/>
+
+
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

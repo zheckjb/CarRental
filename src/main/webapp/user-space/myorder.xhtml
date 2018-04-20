@@ -25,25 +25,42 @@
                              rendered="#{not empty myOrderForm.orders}" headerClass="w3-blue">
                     <h:column>
                         <f:facet name="header">Model</f:facet>
-                        #{order.vehicle.model}
+                        #{order.vehicle.description}
                     </h:column>
                     <h:column>
                         <f:facet name="header">Start date</f:facet>
-                        #{order.startDate}
+                        <h:outputText value="#{order.startDate}" >
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:outputText>
                     </h:column>
                     <h:column>
                         <f:facet name="header">End date</f:facet>
-                        #{order.endtDate}
+                        <h:outputText value="#{order.endtDate}" >
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:outputText>
+
                     </h:column>
                     <h:column>
                         <f:facet name="header">Status</f:facet>
                         #{order.status}
                     </h:column>
                     <h:column>
-                        <f:facet name="header">ISBN</f:facet>
+                        <f:facet name="header">Days</f:facet>
+                        #{order.periodInDays}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Price</f:facet>
+                        #{order.rentPrice} &#x20AC;
+                    </h:column>
+                    <h:column>
                         <h:commandButton value="Cancel"
                                          action="#{myOrderForm.cancelReservation(order)}"
                                          rendered="#{order.status eq 'BOOKED'}">
+                            <f:ajax execute="@form" render="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="Pay"
+                                         action="#{myOrderForm.payReservation(order)}"
+                                         rendered="#{order.status eq 'ACCEPTED'}">
                             <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
                     </h:column>

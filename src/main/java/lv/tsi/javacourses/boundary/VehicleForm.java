@@ -6,6 +6,7 @@ import lv.tsi.javacourses.entity.*;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 
 import static lv.tsi.javacourses.entity.Status.CANCELED;
 
-@RequestScoped
+@ViewScoped
 @Named
 public class VehicleForm implements Serializable {
     private static Logger logger = Logger.getLogger("VehicleForm");
@@ -43,8 +44,7 @@ public class VehicleForm implements Serializable {
 
     @Transactional
     public String reserve(){
-        User user = currentUser.getSignedInUser();
-        logger.info("Name: "+user.getFullName());
+        User user = em.merge(currentUser.getSignedInUser());
         List<Reservation> reservations = em.createQuery(
                 "select r from Reservation r " +
                         "where r.vehicle = :vehicle " +
@@ -59,9 +59,7 @@ public class VehicleForm implements Serializable {
                             new FacesMessage("Reservation is not possible on that period"));
             return null;
         }
-        logger.info("Make new reservation");
-        logger.info("Vehicle: "+vehicle.getModel());
-        logger.info("User: "+user.getFullName());
+
         Reservation reservation = new Reservation();
         reservation.setVehicle(vehicle);
         reservation.setUser(user);
@@ -69,7 +67,6 @@ public class VehicleForm implements Serializable {
         reservation.setStartDate(startDate);
         reservation.setEndtDate(endDate);
         reservation.setRentPrice(vehicle.getRate()*reservation.getPeriodInDays());
-        logger.info("Ready to save");
         em.persist(reservation);
         return "/user-space/myorder.xhtml?faces-redirect=true";
 
